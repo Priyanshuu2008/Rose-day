@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Rose Day 🌹</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Segoe UI', sans-serif;
+}
+
+body{
+  height:100vh;
+  background:radial-gradient(circle at top,#ff5c8a,#b11226,#6a0015);
+  overflow:hidden;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  color:white;
+}
+
+/* Canvas */
+canvas{
+  position:absolute;
+  top:0;
+  left:0;
+}
+
+/* Main Box */
+.container{
+  position:relative;
+  z-index:2;
+  text-align:center;
+}
+
+/* Bouquet */
+.bouquet{
+  width:220px;
+  height:220px;
+  background:linear-gradient(135deg,#ffccd5,#ff4d6d);
+  border-radius:50%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  cursor:pointer;
+  box-shadow:0 0 40px rgba(255,0,80,.6);
+  transition:transform .3s;
+}
+
+.bouquet:hover{
+  transform:scale(1.05);
+}
+
+/* Heart Button */
+.heart{
+  width:120px;
+  height:110px;
+  background:red;
+  position:relative;
+  transform:rotate(-45deg);
+  animation:pulse 1.2s infinite;
+}
+
+.heart:before,
+.heart:after{
+  content:'';
+  width:120px;
+  height:110px;
+  background:red;
+  border-radius:50%;
+  position:absolute;
+}
+
+.heart:before{
+  top:-60px;
+  left:0;
+}
+.heart:after{
+  left:60px;
+  top:0;
+}
+
+.heart span{
+  position:absolute;
+  transform:rotate(45deg);
+  top:38px;
+  left:12px;
+  font-weight:700;
+  font-size:18px;
+}
+
+/* Message */
+.message{
+  display:none;
+  max-width:300px;
+  padding:20px;
+  background:rgba(255,255,255,0.15);
+  backdrop-filter:blur(8px);
+  border-radius:20px;
+  animation:fadeIn 1.5s ease forwards;
+}
+
+.message h2{
+  color:#ffccd5;
+  margin-bottom:10px;
+}
+
+.message p{
+  font-size:18px;
+  line-height:1.5;
+}
+
+/* Animations */
+@keyframes pulse{
+  0%{transform:scale(1) rotate(-45deg);}
+  50%{transform:scale(1.1) rotate(-45deg);}
+  100%{transform:scale(1) rotate(-45deg);}
+}
+
+@keyframes fadeIn{
+  from{opacity:0; transform:translateY(20px);}
+  to{opacity:1; transform:translateY(0);}
+}
+
+/* Falling roses */
+.rose{
+  position:absolute;
+  font-size:24px;
+  animation:fall 3s linear forwards;
+}
+
+@keyframes fall{
+  to{
+    transform:translateY(120vh) rotate(360deg);
+    opacity:0;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="bg"></canvas>
+
+<div class="container">
+  <div class="bouquet" id="bouquet">
+    <div class="heart">
+      <span>Click Here</span>
+    </div>
+  </div>
+
+  <div class="message" id="message">
+    <h2>🌹 Happy Rose Day 🌹</h2>
+    <p>
+      To my beautiful girl <b>plk</b> ❤️🥹<br><br>
+      mera phool mujhse duur hai 😭<br>
+      I'm missing youu so much 💔🌹
+    </p>
+  </div>
+</div>
+
+<script>
+/* Canvas curves */
+const canvas = document.getElementById("bg");
+const ctx = canvas.getContext("2d");
+canvas.width = innerWidth;
+canvas.height = innerHeight;
+
+let t = 0;
+function draw(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.beginPath();
+  for(let x=0;x<canvas.width;x++){
+    let y = canvas.height/2 + Math.sin(x*0.01 + t)*40;
+    ctx.lineTo(x,y);
+  }
+  ctx.strokeStyle="rgba(255,200,210,0.4)";
+  ctx.lineWidth=2;
+  ctx.stroke();
+  t+=0.02;
+  requestAnimationFrame(draw);
+}
+draw();
+
+/* Bouquet click */
+document.getElementById("bouquet").onclick = () => {
+  document.getElementById("bouquet").style.display="none";
+  document.getElementById("message").style.display="block";
+
+  for(let i=0;i<30;i++){
+    let rose=document.createElement("div");
+    rose.className="rose";
+    rose.innerText="🌹";
+    rose.style.left=Math.random()*100+"vw";
+    rose.style.top="-20px";
+    rose.style.animationDuration=2+Math.random()*2+"s";
+    document.body.appendChild(rose);
+    setTimeout(()=>rose.remove(),4000);
+  }
+};
+</script>
+
+</body>
+</html>
